@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rhogem Agustin | Virtual Assistant & AI Content Creator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --rose:    #E8796A;
+      --blush:   #F2B5A8;
+      --cream:   #FDF6F0;
+      --sand:    #F5E6D8;
+      --charcoal:#2E2320;
+      --muted:   #8A7065;
+      --white:   #FFFFFF;
+      --accent:  #C9503F;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--charcoal);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(253,246,240,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(232,121,106,0.15);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; color: var(--rose);
+      letter-spacing: .02em;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted);
+      font-size: .85rem; letter-spacing: .08em; text-transform: uppercase;
+      transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--rose); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      gap: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    /* soft petal blobs */
+    #hero::before, #hero::after {
+      content: ''; position: absolute; border-radius: 50%;
+      opacity: .18; pointer-events: none;
+    }
+    #hero::before {
+      width: 520px; height: 520px;
+      background: var(--blush);
+      top: -100px; right: -80px;
+    }
+    #hero::after {
+      width: 340px; height: 340px;
+      background: var(--rose);
+      bottom: 20px; left: -60px;
+    }
+
+    .hero-text { position: relative; z-index: 2; }
+    .hero-eyebrow {
+      font-size: .78rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--rose); margin-bottom: 1.2rem;
+    }
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 6vw, 5rem);
+      line-height: 1.05;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+    }
+    .hero-name em { color: var(--rose); font-style: italic; }
+    .hero-roles {
+      display: flex; flex-wrap: wrap; gap: .6rem;
+      margin-bottom: 2rem;
+    }
+    .role-chip {
+      background: var(--sand); color: var(--accent);
+      font-size: .78rem; font-weight: 500; letter-spacing: .06em;
+      padding: .35rem .9rem; border-radius: 99px;
+      border: 1px solid var(--blush);
+    }
+    .hero-desc {
+      font-size: 1rem; line-height: 1.75; color: var(--muted);
+      max-width: 480px; margin-bottom: 2.5rem;
+    }
+    .hero-cta {
+      display: inline-block;
+      background: var(--rose); color: var(--white);
+      padding: .85rem 2.2rem; border-radius: 99px;
+      text-decoration: none; font-size: .9rem; font-weight: 500;
+      letter-spacing: .04em;
+      transition: background .25s, transform .2s;
+      box-shadow: 0 8px 24px rgba(232,121,106,.35);
+    }
+    .hero-cta:hover { background: var(--accent); transform: translateY(-2px); }
+
+    .hero-visual {
+      position: relative; z-index: 2;
+      display: flex; justify-content: center; align-items: center;
+    }
+    .photo-frame {
+      width: 340px; height: 400px;
+      border-radius: 160px 160px 120px 120px;
+      overflow: hidden;
+      border: 6px solid var(--blush);
+      box-shadow: 12px 20px 48px rgba(232,121,106,.22);
+      position: relative;
+    }
+    .photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .photo-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(160deg, var(--blush) 0%, var(--sand) 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: .5rem; color: var(--rose);
+    }
+    .photo-placeholder span { font-size: .8rem; text-align: center; color: var(--muted); padding: 0 1rem; }
+    .stat-bubble {
+      position: absolute; background: var(--white);
+      border-radius: 14px; padding: .9rem 1.2rem;
+      box-shadow: 0 6px 24px rgba(46,35,32,.1);
+      font-size: .78rem; color: var(--muted);
+    }
+    .stat-bubble strong { display: block; font-size: 1.4rem; color: var(--rose); font-family: 'Playfair Display', serif; }
+    .stat-a { top: 30px; left: -30px; }
+    .stat-b { bottom: 50px; right: -30px; }
+
+    /* ── SECTION SHELL ── */
+    section { padding: 6rem 4rem; }
+    .section-label {
+      font-size: .72rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--rose); margin-bottom: .5rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      color: var(--charcoal); margin-bottom: 3rem;
+      line-height: 1.2;
+    }
+
+    /* ── BACKGROUND ── */
+    #background { background: var(--sand); }
+    .bg-card {
+      max-width: 680px;
+      background: var(--white);
+      border-radius: 20px;
+      padding: 2.5rem 3rem;
+      box-shadow: 0 8px 40px rgba(46,35,32,.07);
+      border-left: 5px solid var(--rose);
+    }
+    .bg-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem; color: var(--charcoal); margin-bottom: .5rem;
+    }
+    .bg-card .honor {
+      display: inline-block; margin: .5rem 0 1rem;
+      background: var(--rose); color: var(--white);
+      font-size: .75rem; font-weight: 600; letter-spacing: .08em;
+      padding: .3rem .9rem; border-radius: 99px;
+    }
+    .bg-card p { color: var(--muted); font-size: .92rem; line-height: 1.65; }
+
+    /* ── SERVICES ── */
+    #services { background: var(--cream); }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.4rem;
+    }
+    .service-card {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 1.8rem 1.6rem;
+      border: 1px solid rgba(232,121,106,.18);
+      transition: transform .25s, box-shadow .25s;
+      position: relative; overflow: hidden;
+    }
+    .service-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--rose), var(--blush));
+    }
+    .service-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(232,121,106,.18); }
+    .service-icon { font-size: 1.6rem; margin-bottom: .8rem; }
+    .service-card h3 { font-size: .88rem; font-weight: 600; color: var(--charcoal); letter-spacing: .03em; }
+
+    /* ── TOOLS ── */
+    #tools { background: var(--charcoal); }
+    #tools .section-label { color: var(--blush); }
+    #tools .section-title { color: var(--white); }
+    .tools-categories { display: flex; flex-direction: column; gap: 2.5rem; }
+    .tool-group h4 {
+      font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--blush); margin-bottom: 1rem; border-bottom: 1px solid rgba(242,181,168,.2);
+      padding-bottom: .5rem;
+    }
+    .tool-tags { display: flex; flex-wrap: wrap; gap: .6rem; }
+    .tool-tag {
+      background: rgba(255,255,255,.07);
+      color: rgba(255,255,255,.8);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: .4rem 1rem; border-radius: 99px;
+      font-size: .8rem; letter-spacing: .03em;
+      transition: background .2s, color .2s;
+    }
+    .tool-tag:hover { background: var(--rose); color: var(--white); border-color: var(--rose); }
+
+    /* ── SAMPLE WORK ── */
+    #samples { background: var(--sand); }
+    .samples-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.6rem;
+    }
+    .sample-card {
+      background: var(--white);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 24px rgba(46,35,32,.08);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .sample-card:hover { transform: translateY(-6px); box-shadow: 0 18px 48px rgba(232,121,106,.2); }
+    .sample-thumb {
+      height: 180px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem;
+    }
+    .sample-thumb.excel  { background: linear-gradient(135deg, #1F7A4B 0%, #2EAA68 100%); }
+    .sample-thumb.tiktok { background: linear-gradient(135deg, #010101 0%, #3a3a3a 100%); }
+    .sample-thumb.video  { background: linear-gradient(135deg, #C9503F 0%, #E8796A 100%); }
+    .sample-thumb.cal    { background: linear-gradient(135deg, #065A82 0%, #1C7293 100%); }
+    .sample-thumb.design { background: linear-gradient(135deg, #6D2E46 0%, #A26769 100%); }
+    .sample-body { padding: 1.4rem 1.6rem; }
+    .sample-body h3 { font-size: 1rem; font-weight: 600; color: var(--charcoal); margin-bottom: .4rem; }
+    .sample-body p  { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--cream);
+      text-align: center;
+    }
+    #contact .section-title { margin-bottom: 1rem; }
+    #contact .sub { color: var(--muted); font-size: 1rem; margin-bottom: 3rem; }
+    .contact-cards {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 1.2rem;
+      max-width: 700px; margin: 0 auto 3rem;
+    }
+    .contact-item {
+      background: var(--white); border-radius: 14px;
+      padding: 1rem 1.8rem;
+      box-shadow: 0 4px 18px rgba(46,35,32,.07);
+      display: flex; align-items: center; gap: .8rem;
+      font-size: .9rem; color: var(--charcoal);
+      text-decoration: none;
+      border: 1px solid rgba(232,121,106,.15);
+      transition: box-shadow .2s, transform .2s;
+    }
+    .contact-item:hover { box-shadow: 0 8px 28px rgba(232,121,106,.2); transform: translateY(-2px); }
+    .contact-item span.icon { font-size: 1.2rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--charcoal); color: rgba(255,255,255,.4);
+      text-align: center; padding: 2rem;
+      font-size: .8rem; letter-spacing: .04em;
+    }
+    footer strong { color: var(--blush); }
+
+    /* ── ANIMATIONS ── */
+    .fade-up {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.2rem; }
+      #hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; text-align: center; gap: 2.5rem; }
+      .hero-desc { max-width: 100%; }
+      .hero-roles { justify-content: center; }
+      .hero-visual { order: -1; }
+      .photo-frame { width: 240px; height: 280px; }
+      .stat-a, .stat-b { display: none; }
+      section { padding: 4rem 1.5rem; }
+      .bg-card { padding: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Rhogem Agustin</div>
+  <ul class="nav-links">
+    <li><a href="#background">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#tools">Tools</a></li>
+    <li><a href="#samples">Work</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-text fade-up">
+    <p class="hero-eyebrow">Portfolio — Virtual Assistant &amp; Content Creator</p>
+    <h1 class="hero-name">Rhogem<br/><em>Agustin</em></h1>
+    <div class="hero-roles">
+      <span class="role-chip">Virtual Assistant</span>
+      <span class="role-chip">AI Content Creator</span>
+      <span class="role-chip">Copywriter</span>
+      <span class="role-chip">Social Media Manager</span>
+    </div>
+    <p class="hero-desc">
+      Results-driven and detail-oriented with over two years of experience in administrative operations, real estate support, and digital content creation.
+    </p>
+    <a href="#contact" class="hero-cta">Let's Work Together</a>
+  </div>
+
+  <div class="hero-visual fade-up">
+    <div class="stat-bubble stat-a">
+      <strong>2+</strong>Years VA Experience
+    </div>
+    <div class="photo-frame">
+      <!-- Replace the src below with your actual photo, e.g. src="photo.jpg" -->
+      <div class="photo-placeholder">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span>Add your photo here:<br/>replace with &lt;img src="photo.jpg"&gt;</span>
+      </div>
+    </div>
+    <div class="stat-bubble stat-b">
+      <strong>Magna</strong>Cum Laude, XU 2023
+    </div>
+  </div>
+</section>
+
+<!-- BACKGROUND -->
+<section id="background">
+  <p class="section-label fade-up">Education</p>
+  <h2 class="section-title fade-up">Background</h2>
+  <div class="bg-card fade-up">
+    <h3>Bachelor of Science in Business Administration</h3>
+    <span class="honor">🏆 Magna Cum Laude</span>
+    <p>Xavier University – Ateneo de Cagayan<br/>
+    73 Corrales Ave, Cagayan de Oro, 9000 Misamis Oriental<br/>
+    School Year 2019 – 2023</p>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <p class="section-label fade-up">What I Offer</p>
+  <h2 class="section-title fade-up">Services</h2>
+  <div class="services-grid">
+    <div class="service-card fade-up"><div class="service-icon">📋</div><h3>Accounts Management</h3></div>
+    <div class="service-card fade-up"><div class="service-icon">📧</div><h3>Email Management</h3></div>
+    <div class="service-card fade-up"><div class="service-icon">📁</div><h3>Document Management</h3></div>
+    <div class="service-card fade-up"><div class="service-icon">📢</div><h3>SMS / Email Blast</h3></div>
+    <div class="service-card fade-up"><div class="service-icon">🎧</div><h3>Customer Service</h3></div>
+    <div class="service-card fade-up"><div class="service-icon">🏠</div><h3>Real Estate Support</h3></div>
+    <div class="service-card fade-up"><div class="service-icon">📊</div><h3>Data Entry &amp; Analysis</h3></div>
+    <div class="service-card fade-up"><div class="service-icon">🎬</div><h3>Video Editing</h3></div>
+    <div class="service-card fade-up"><div class="service-icon">💸</div><h3>Commissions Monitoring</h3></div>
+    <div class="service-card fade-up"><div class="service-icon">✉️</div><h3>Letter Sending</h3></div>
+    <div class="service-card fade-up"><div class="service-icon">🔍</div><h3>VLOOKUP &amp; Pivot Tables</h3></div>
+    <div class="service-card fade-up"><div class="service-icon">⚙️</div><h3>Other Admin Tasks</h3></div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section id="tools">
+  <p class="section-label fade-up">My Toolkit</p>
+  <h2 class="section-title fade-up">Tools I Use</h2>
+  <div class="tools-categories">
+    <div class="tool-group fade-up">
+      <h4>Office &amp; Admin</h4>
+      <div class="tool-tags">
+        <span class="tool-tag">MS Excel</span>
+        <span class="tool-tag">MS Word</span>
+        <span class="tool-tag">MS PowerPoint</span>
+        <span class="tool-tag">SAP Software</span>
+        <span class="tool-tag">Odoo</span>
+        <span class="tool-tag">Outlook</span>
+        <span class="tool-tag">Cataloging</span>
+      </div>
+    </div>
+    <div class="tool-group fade-up">
+      <h4>Creative &amp; Design</h4>
+      <div class="tool-tags">
+        <span class="tool-tag">Canva</span>
+        <span class="tool-tag">CapCut Pro</span>
+        <span class="tool-tag">Clipchamp</span>
+        <span class="tool-tag">Soloop</span>
+        <span class="tool-tag">Picso.AI</span>
+      </div>
+    </div>
+    <div class="tool-group fade-up">
+      <h4>AI &amp; Content</h4>
+      <div class="tool-tags">
+        <span class="tool-tag">Captions.AI</span>
+        <span class="tool-tag">ChatGPT</span>
+        <span class="tool-tag">Claude.AI</span>
+        <span class="tool-tag">Gemini / Nano Banana</span>
+        <span class="tool-tag">Zerix</span>
+        <span class="tool-tag">ElevenLabs.io</span>
+        <span class="tool-tag">VEO3</span>
+      </div>
+    </div>
+    <div class="tool-group fade-up">
+      <h4>Communication &amp; Social</h4>
+      <div class="tool-tags">
+        <span class="tool-tag">Discord</span>
+        <span class="tool-tag">Slack</span>
+        <span class="tool-tag">TikTok</span>
+        <span class="tool-tag">Social Media Platforms</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAMPLE WORK -->
+<section id="samples">
+  <p class="section-label fade-up">Portfolio</p>
+  <h2 class="section-title fade-up">Sample Work</h2>
+  <div class="samples-grid">
+    <div class="sample-card fade-up">
+      <div class="sample-thumb excel">📊</div>
+      <div class="sample-body">
+        <h3>VLOOKUP &amp; Pivot Tables</h3>
+        <p>Data analysis and reporting using advanced Excel functions for organized, actionable insights.</p>
+      </div>
+    </div>
+    <div class="sample-card fade-up">
+      <div class="sample-thumb tiktok">🎵</div>
+      <div class="sample-body">
+        <h3>TikTok Content</h3>
+        <p>Engaging short-form video content crafted for social media audiences, with trending formats.</p>
+      </div>
+    </div>
+    <div class="sample-card fade-up">
+      <div class="sample-thumb video">🎬</div>
+      <div class="sample-body">
+        <h3>Video Production</h3>
+        <p>Edited video content using AI-powered tools like VEO3, CapCut Pro, and Clipchamp.</p>
+      </div>
+    </div>
+    <div class="sample-card fade-up">
+      <div class="sample-thumb cal">📅</div>
+      <div class="sample-body">
+        <h3>Calendar Management</h3>
+        <p>Organized scheduling and calendar coordination for clients, including IMA-Kalinokan events.</p>
+      </div>
+    </div>
+    <div class="sample-card fade-up">
+      <div class="sample-thumb design">🎨</div>
+      <div class="sample-body">
+        <h3>Quotes &amp; Poster Designs</h3>
+        <p>Creative visual content and branded poster designs using Canva for social media campaigns.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label fade-up">Get In Touch</p>
+  <h2 class="section-title fade-up">Let's Connect</h2>
+  <p class="sub fade-up">Available for full-time VA roles — specializing in AI content creation, copywriting &amp; photofinding.</p>
+  <div class="contact-cards">
+    <a class="contact-item fade-up" href="mailto:heyrhogem@gmail.com">
+      <span class="icon">✉️</span> heyrhogem@gmail.com
+    </a>
+    <a class="contact-item fade-up" href="tel:+639155674514">
+      <span class="icon">📞</span> 0915 567 4514
+    </a>
+    <div class="contact-item fade-up">
+      <span class="icon">📍</span> Iponan, Cagayan de Oro
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <strong>Rhogem Agustin</strong> · Virtual Assistant &amp; AI Content Creator · All rights reserved.</p>
+</footer>
+
+<script>
+  // Scroll-triggered fade-up
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
